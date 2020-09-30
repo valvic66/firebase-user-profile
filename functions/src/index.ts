@@ -65,6 +65,30 @@ app.post('/users', async (req, res) => {
     }
 });
 
+app.get('/users/:id', async(req, res) => {
+    try {
+        const userId = req.params.id;
+
+        if(!userId) {
+            throw new Error('User ID is required!')
+        }
+
+        const user = await db.collection(userCollection).doc(userId).get();
+
+        if(!user.exists) {
+            throw new Error('Person does not exist in db!');
+        }
+
+        res.json({
+            id: user.id,
+            data: user.data()
+        });
+
+    } catch(err) {
+        res.status(500).send(err);
+    }
+});
+
 
 
 
