@@ -12,9 +12,60 @@ main.use('/api/v1', app);
 main.use(bodyParser.json());
 
 const db = admin.firestore();
-const userCollection = 'persons';
+const userCollection = 'users';
 
 export const userProfileApi = functions.https.onRequest(main);
+
+export interface IUser {
+    id: string;
+    data: IUserData;
+}
+
+export interface IUserData {
+    firstName: string;
+    lastName: string;
+    profileImage: string;
+    position: string;
+    workedFor: string;
+    workLocation: string;
+    aboutYou: string;
+}
+
+app.post('/users', async (req, res) => {
+    try {
+        const { 
+            firstName,
+            lastName,
+            profileImage,
+            position,
+            workedFor,
+            workLocation,
+            aboutYou
+        }: IUserData = req.body;
+
+        const userData: IUserData = {
+            firstName,
+            lastName,
+            profileImage,
+            position,
+            workedFor,
+            workLocation,
+            aboutYou
+        }
+
+        const userRef = await db.collection(userCollection).add(userData);
+        const user = await userRef.get();
+
+        res.json({
+            id: userRef.id,
+            data: user.data()
+        });
+    } catch(err) {
+        res.status(500).send(err);
+    }
+});
+
+
 
 
 
