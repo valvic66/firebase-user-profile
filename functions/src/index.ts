@@ -124,7 +124,27 @@ app.delete('/users/:id', async (req, res) => {
     }
 });
 
+app.put('/users/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+  
+        if (!userId) throw new Error('id not defined!');
 
+        const data = { 
+            newProp: 'new prop value',
+            firstName: 'changed first name'
+        };
+
+        await db.collection(userCollection).doc(userId).set(data, { merge: true });
+  
+        res.json({
+            id: userId,
+            data
+        });  
+    } catch(err){
+        res.status(500).send(err);
+    }
+});
 
 
 
