@@ -89,6 +89,41 @@ app.get('/users/:id', async(req, res) => {
     }
 });
 
+app.get('/users', async (req, res) => {
+    try {
+        const usersSnapshot = await db.collection(userCollection).get();
+        const users: any[] = [];
+        usersSnapshot.forEach(
+            (user) => {
+                users.push({
+                    id: user.id,
+                    data: user.data()
+                });
+            }
+        );
+  
+        res.json(users);
+    } catch(err) {
+        res.status(500).send(err);
+    }
+});
+
+app.delete('/users/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+  
+        if (!userId) throw new Error('id not defined!');
+  
+        await db.collection(userCollection).doc(userId).delete();
+  
+        res.json({
+            id: userId,
+        })
+    } catch(error){
+        res.status(500).send(error);
+    }
+});
+
 
 
 
