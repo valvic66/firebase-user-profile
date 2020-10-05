@@ -2,6 +2,7 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
+const cors = require('cors');
 
 admin.initializeApp(functions.config().firebase);
 
@@ -9,6 +10,7 @@ const app = express();
 const main = express();
 
 main.use('/api/v1', app);
+app.use(cors());
 main.use(bodyParser.json());
 
 const db = admin.firestore();
@@ -103,6 +105,7 @@ app.get('/users', async (req, res) => {
         );
   
         res.json(users);
+
     } catch(err) {
         res.status(500).send(err);
     }
@@ -127,19 +130,34 @@ app.delete('/users/:id', async (req, res) => {
 app.put('/users/:id', async (req, res) => {
     try {
         const userId = req.params.id;
+
+        const { 
+            firstName,
+            lastName,
+            profileImage,
+            position,
+            workedFor,
+            workLocation,
+            aboutYou
+        }: IUserData = req.body;
+
+        const userData: IUserData = {
+            firstName,
+            lastName,
+            profileImage,
+            position,
+            workedFor,
+            workLocation,
+            aboutYou
+        }
   
         if (!userId) throw new Error('id not defined!');
 
-        const data = { 
-            newProp: 'new prop value',
-            firstName: 'changed first name'
-        };
-
-        await db.collection(userCollection).doc(userId).set(data, { merge: true });
+        await db.collection(userCollection).doc(userId).set(userData, { merge: true });
   
         res.json({
             id: userId,
-            data
+            data: userData
         });  
     } catch(err){
         res.status(500).send(err);

@@ -1,0 +1,29 @@
+.form-input {
+    padding: 3px;
+}
+
+@media screen {
+    body { 
+        background: #ECEFF1; 
+        color: rgba(0,0,0,0.87); 
+        font-family: Roboto, Helvetica, Arial, sans-serif; 
+        margin: 0; 
+        padding: 0; 
+    }
+}
+
+.navbar-toggler {
+    background-color: white;
+    padding: 3px;
+}
+
+.navbar-brand-text {
+    font-size: 1.2rem; 
+    padding-left: 10px;
+    color: white;
+}
+
+#signin-form .modal-footer {
+    border-top: none;
+}
+
