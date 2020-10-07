@@ -12,6 +12,7 @@
     <link type="text/css" rel="stylesheet" href="index.css" />
   </head>
   <body>
+    <!-- navbar -->
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: orange;">
       <a class="navbar-brand" href="#">
         <img src="https://firebase.google.com/downloads/brand-guidelines/PNG/logo-vertical.png" alt="Firebase" height="50">
@@ -27,7 +28,7 @@
             <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Login<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Signup</a>
+            <a class="nav-link" href="#" data-toggle="modal" data-target="#signupModal">Signup</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#" id="logout">Logout</a>
@@ -36,21 +37,34 @@
       </div>
     </nav>
 
-    <div class="signup-modal">
-      <form action="" id="signup-form">
-        <h3>Sign up form</h3>
-        <div class="form-input">
-          <label for="signup-email">Email</label>
-          <input type="email" id="signup-email" required />
+    <!-- Sign up modal -->
+    <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Signup to CMS</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="signup-form">
+              <div class="form-input form-group">
+                <label for="signup-email">Email</label>
+                <input type="text" class="form-control" id="signup-email" required />
+              </div>
+              <div class="form-input">
+                <label for="signup-password">Password</label>
+                <input type="text" class="form-control" id="signup-password" required />
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Signup</button>
+              </div>
+            </form>
+          </div>
         </div>
-        <div class="form-input">
-          <label for="signup-password">Password</label>
-          <input type="password" id="signup-password" required />
-        </div>
-        <button type="submit">Sign up</button>
-      </form>
+      </div>
     </div>
-
 
     <!-- Login modal -->
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -105,10 +119,6 @@
 
       const auth = firebase.auth();
       const db = firebase.firestore();
-
-      db.settings({
-        timestampsInSnapshots: true
-      })
     </script>
 
     <script>
