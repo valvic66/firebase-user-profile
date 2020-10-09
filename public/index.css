@@ -31,3 +31,16 @@
     border-top: none;
 }
 
+.user-card {
+    box-sizing: border-box;
+    width: 90%;
+    margin: 0 auto;
+}
+
+@media (min-width: 400px) {
+    .user-card {
+        width: 80%;
+        margin: 0 auto;
+    }
+}
+
