@@ -12,90 +12,22 @@
     <link type="text/css" rel="stylesheet" href="index.css" />
   </head>
   <body>
-    <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: orange;">
-      <a class="navbar-brand" href="#">
-        <img src="https://firebase.google.com/downloads/brand-guidelines/PNG/logo-vertical.png" alt="Firebase" height="50">
-        <span class="navbar-brand-text">User profile CMS</span>
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Login<span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" data-toggle="modal" data-target="#signupModal">Signup</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" id="logout">Logout</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-    
-    <!-- Sign up modal -->
-    <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Signup to CMS</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="signup-form">
-              <div class="form-input form-group">
-                <label for="signup-email">Email</label>
-                <input type="text" class="form-control" id="signup-email" required />
-              </div>
-              <div class="form-input">
-                <label for="signup-password">Password</label>
-                <input type="text" class="form-control" id="signup-password" required />
-              </div>
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Signup</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Login modal -->
-    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Login to CMS</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="signin-form">
-              <div class="form-input form-group">
-                <label for="signin-email">Email</label>
-                <input type="text" class="form-control" id="signin-email" required />
-              </div>
-              <div class="form-input">
-                <label for="signin-password">Password</label>
-                <input type="text" class="form-control" id="signin-password" required />
-              </div>
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Login</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    
     <div id="app">
+      <div id="login-form">
+        <input type="email" v-model="loginEmail">
+        <input type="password" v-model="loginPassword">
+        <button class="btn btn-primary" v-on:click="loginUser">Login</button>
+      </div>
+
+      <div id="signup-form">
+        <input type="email" v-model="signupEmail">
+        <input type="password" v-model="signupPassword">
+        <button class="btn btn-primary" v-on:click="signupUser">Sign up</button>
+      </div>
+
+      <button class="btn btn-primary" v-on:click="logoutUser">Logout</button>
+
+      <p>User logged in: {{ userLoggedIn ? 'TRUE' : 'FALSE' }}</p>
       <users-number v-bind:users="usersNumber" v-if="usersNumber > 0"></users-number>
       <div class="container user-card">
         <div class="row">
@@ -105,7 +37,8 @@
             v-bind:key="person.id"
           ></person-item>
         </div>
-      </div> 
+      </div>
+
     </div>
   </div>
   
@@ -136,7 +69,6 @@
     </script>
 
 <script src="index.js"></script>
-<script src="auth.js"></script>
 
 <!-- development version, includes helpful console warnings -->
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>

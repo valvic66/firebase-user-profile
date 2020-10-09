@@ -1,7 +1,7 @@
 Vue.component('person-item', {
   props: ['person'],
   template: `
-    <div class="card col-12 col-sd-6 col-md-4 col-lg-3 col-xl-2">
+    <div class="card col-sd-12 col-md-6 col-lg-3 col-xl-2">
       <div class="card-body">
         <h5 class="card-title">User card</h5>
         <p class="card-text">{{ person.id }}</p>
@@ -26,6 +26,11 @@ var vue = new Vue({
   el: '#app',
   data: {
     users: [],
+    userLoggedIn: false,
+    loginEmail: '',
+    loginPassword: '',
+    signupEmail: '',
+    signupPassword: '',
   },
   computed: {
     usersNumber: function() {
@@ -33,6 +38,16 @@ var vue = new Vue({
     }
   },
   mounted: function() {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+          console.log("user logged in", user);
+          this.userLoggedIn = true;
+      } else {
+          console.log("user logged out");
+          this.userLoggedIn = false;
+      }
+    });
+
     this.getUsers("https://us-central1-user-profile-4c1a4.cloudfunctions.net/userProfileApi/api/v1/users/").then(res => {
       console.log(res);
       this.users = res;
@@ -45,9 +60,42 @@ var vue = new Vue({
         
       return json;
     },
-
+    loginUser: function() {
+      console.log('loginUser method called');
+      try {
+        auth.signInWithEmailAndPassword(this.loginEmail, this.loginPassword)
+          .then(credential => {
+            console.log(credential);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+        }
+      finally {
+        this.loginEmail = '';
+        this.loginPassword = '';
+      }
+    },
+    logoutUser: function() {
+      auth.signOut();
+    },
+    signupUser: function() {
+      console.log('signupUser method called');
+      try {
+        auth.createUserWithEmailAndPassword(this.signupEmail, this.signupPassword)
+          .then(credential => {
+            console.log(credential);
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      }
+      finally {
+        this.signupEmail = '';
+        this.signupPassword = '';
+      }
+    },
   },
-  
 })
 
 
