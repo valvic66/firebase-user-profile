@@ -22,19 +22,62 @@
   </head>
   <body>
     <div id="app">
-      <div id="login-form">
-        <input type="email" v-model="loginEmail">
-        <input type="password" v-model="loginPassword">
-        <button class="btn btn-primary" v-on:click="loginUser">Login</button>
-      </div>
 
-      <div id="signup-form">
-        <input type="email" v-model="signupEmail">
-        <input type="password" v-model="signupPassword">
-        <button class="btn btn-primary" v-on:click="signupUser">Sign up</button>
-      </div>
+      <!-- navbar -->
+      <b-navbar toggleable="lg" type="dark" variant="info">
+        <b-navbar-brand href="#">User Profile CMS</b-navbar-brand>
+    
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+    
+        <b-collapse id="nav-collapse" is-nav>
+          <b-navbar-nav>
+            <b-nav-item href="#">Re-fetch data [IN WORK]</b-nav-item>
+          </b-navbar-nav>
+    
+          <!-- Right aligned nav items -->
+          <b-navbar-nav class="ml-auto">
+            <b-nav-item-dropdown right>
+              <!-- Using 'button-content' slot -->
+              <template v-slot:button-content>
+                <em>User profile</em>
+              </template>
+              <b-dropdown-item href="#" v-b-modal.modal-login>Login</b-dropdown-item>
+              <b-dropdown-item href="#" v-b-modal.modal-signup>Sign Up</b-dropdown-item>
+              <b-dropdown-item href="#" v-on:click="logoutUser">Logout</b-dropdown-item>
+            </b-nav-item-dropdown>
+          </b-navbar-nav>
+        </b-collapse>
+      </b-navbar>
 
-      <button class="btn btn-primary" v-on:click="logoutUser">Logout</button>
+      <!-- login modal -->
+      <b-modal id="modal-login" title="Login" ref="modal-login" hide-footer>
+        <div id="form-login">
+          <div>
+            <p>Email</p>
+            <b-form-input type="email" v-model="loginEmail">
+          </div>
+          <div>
+            <p>Password</p>
+            <b-form-input type="password" v-model="loginPassword">
+          </div>
+          <b-button class="login-button" variant="outline-primary" v-on:click="loginUser">Login</b-button>
+        </div>
+      </b-modal>
+
+      <!-- signup modal -->
+      <b-modal id="modal-signup" title="Sign up" ref="modal-signup" hide-footer>
+        <div id="form-signup">
+          <div>
+            <p>Email</p>
+            <b-form-input type="email" v-model="signupEmail"></b-form-input>
+          </div>
+          <div>
+            <p>Password</p>
+            <b-form-input type="password" v-model="signupPassword">
+          </div>
+          <b-button class="btn btn-primary signup-button" v-on:click="signupUser">Sign up</b-button>
+        </div>
+      </b-modal>
 
       <p>User logged in: {{ userLoggedIn ? 'TRUE' : 'FALSE' }}</p>
       <users-number v-bind:users="usersNumber" v-if="usersNumber > 0"></users-number>

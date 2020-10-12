@@ -66,6 +66,7 @@ var vue = new Vue({
         auth.signInWithEmailAndPassword(this.loginEmail, this.loginPassword)
           .then(credential => {
             console.log(credential);
+            this.$refs['modal-login'].hide();
           })
           .catch(error => {
             console.log(error);
@@ -85,6 +86,7 @@ var vue = new Vue({
         auth.createUserWithEmailAndPassword(this.signupEmail, this.signupPassword)
           .then(credential => {
             console.log(credential);
+            this.$refs['modal-signup'].hide();
           })
           .catch(error => {
             console.log(error);
