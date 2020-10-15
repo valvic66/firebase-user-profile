@@ -12,7 +12,18 @@
 }
 
 .login-button,
-.signup-button {
+.signup-button,
+.button-add {
     margin-top: 20px;
+}
+
+.login-status {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 5px 10px;
+    margin: 5px;
+    color: white;
+    background-color: black;
 }
 

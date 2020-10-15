@@ -31,7 +31,14 @@
     
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav>
-            <b-nav-item href="#">Re-fetch data [IN WORK]</b-nav-item>
+            <b-nav-item href="#">Option</b-nav-item>
+            <b-nav-item-dropdown>
+              <!-- Using 'button-content' slot -->
+              <template v-slot:button-content>
+                <em>Manage CMS data</em>
+              </template>
+              <b-dropdown-item href="#" v-b-modal.modal-add>Add data</b-dropdown-item>
+            </b-nav-item-dropdown>
           </b-navbar-nav>
     
           <!-- Right aligned nav items -->
@@ -48,6 +55,41 @@
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
+
+      <!-- add data modal -->
+      <b-modal id="modal-add" title="Add data" ref="modal-add" hide-footer>
+        <div id="form-add">
+          <div>
+            <p>First name</p>
+            <b-form-input type="text" v-model="firstNameAddModal">
+          </div>
+          <div>
+            <p>Last name</p>
+            <b-form-input type="text" v-model="lastNameAddModal">
+          </div>
+          <div>
+            <p>Profile image url</p>
+            <b-form-input type="text" v-model="profileImageAddModal">
+          </div>
+          <div>
+            <p>Position</p>
+            <b-form-input type="text" v-model="positionAddModal">
+          </div>
+          <div>
+            <p>Worked for</p>
+            <b-form-input type="text" v-model="workedForAddModal">
+          </div>
+          <div>
+            <p>Work location</p>
+            <b-form-input type="text" v-model="workLocationAddModal">
+          </div>
+          <div>
+            <p>About you</p>
+            <b-form-input type="text" v-model="aboutYouAddModal">
+          </div>
+          <b-button class="button-add" variant="outline-primary" v-on:click="addData">Add</b-button>
+        </div>
+      </b-modal>
 
       <!-- login modal -->
       <b-modal id="modal-login" title="Login" ref="modal-login" hide-footer>
@@ -79,17 +121,59 @@
         </div>
       </b-modal>
 
-      <p>User logged in: {{ userLoggedIn ? 'TRUE' : 'FALSE' }}</p>
-      <users-number v-bind:users="usersNumber" v-if="usersNumber > 0"></users-number>
-      <div class="container user-card">
-        <div class="row">
-          <person-item
-            v-for="person in users"
-            v-bind:person="person"
-            v-bind:key="person.id"
-          ></person-item>
+      <div class="login-status">User logged in: {{ userLoggedIn ? 'TRUE' : 'FALSE' }}</div>
+
+      <div v-if="showCards">
+        <users-number v-bind:users="usersNumber" v-if="usersNumber > 0"></users-number>
+      
+        <div class="container user-card">
+          <div class="row">
+            <person-item
+              v-for="person in users"
+              v-bind:person="person"
+              v-bind:key="person.id"
+              v-bind:showcards="showCards"
+              @delete="deleteData(person.id)"
+              @edit="editData(person)"
+            ></person-item>
+          </div>
         </div>
       </div>
+
+      <!-- edit data modal -->
+      <b-modal id="modal-edit" title="Edit data" ref="modal-edit" hide-footer v-model="modalEditShow">
+        <div id="form-edit">
+          <div>
+            <p>First name</p>
+            <b-form-input type="text" v-model="modalEditData.data && modalEditData.data.firstName">
+          </div>
+          <div>
+            <p>Last name</p>
+            <b-form-input type="text" v-model="modalEditData.data && modalEditData.data.lastName">
+          </div>
+          <div>
+            <p>Profile image url</p>
+            <b-form-input type="text" v-model="modalEditData.data && modalEditData.data.profileImage">
+          </div>
+          <div>
+            <p>Position</p>
+            <b-form-input type="text" v-model="modalEditData.data && modalEditData.data.position">
+          </div>
+          <div>
+            <p>Worked for</p>
+            <b-form-input type="text" v-model="modalEditData.data && modalEditData.data.workedFor">
+          </div>
+          <div>
+            <p>Work location</p>
+            <b-form-input type="text" v-model="modalEditData.data && modalEditData.data.workLocation">
+          </div>
+          <div>
+            <p>About you</p>
+            <b-form-input type="text" v-model="modalEditData.data && modalEditData.data.aboutYou">
+          </div>
+          <b-button class="button-edit" variant="outline-primary" v-on:click="editDataSubmit">Edit</b-button>
+        </div>
+      </b-modal>
 
     </div>
   </div>

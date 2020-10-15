@@ -1,5 +1,7 @@
 Vue.component('person-item', {
-  props: ['person'],
+  props: {
+    person: String,
+  },
   template: `
     <div class="card col-sd-12 col-md-6 col-lg-3 col-xl-2">
       <div class="card-body">
@@ -13,8 +15,18 @@ Vue.component('person-item', {
         <p class="card-text">{{ person.data.workLocation }}</p>
         <p class="card-text">{{ person.data.aboutYou }}</p>
       </div>
+      <b-button class="delete-button" variant="outline-primary" v-on:click="onClickDelete">Delete</b-button>
+      <b-button class="edit-button" variant="outline-primary" v-on:click="onClickEdit">Edit</b-button>
     </div>
-  `
+  `,
+  methods: {
+    onClickDelete: function(event) {
+      this.$emit('delete', this.person.id);
+    },
+    onClickEdit: function(event) {
+      this.$emit('edit', this.person);
+    }
+  }
 })
 
 Vue.component('users-number', {
@@ -27,10 +39,25 @@ var vue = new Vue({
   data: {
     users: [],
     userLoggedIn: false,
+    // login data
     loginEmail: '',
     loginPassword: '',
     signupEmail: '',
     signupPassword: '',
+
+    // add modal data
+    firstNameAddModal: '',
+    lastNameAddModal: '',
+    profileImageAddModal: '',
+    positionAddModal: '',
+    workedForAddModal: '',
+    workLocationAddModal: '',
+    aboutYouAddModal: '',
+
+    showCards: false,
+
+    modalEditShow: false,
+    modalEditData: {},
   },
   computed: {
     usersNumber: function() {
@@ -42,9 +69,11 @@ var vue = new Vue({
       if (user) {
           console.log("user logged in", user);
           this.userLoggedIn = true;
+          this.showCards = true;
       } else {
           console.log("user logged out");
           this.userLoggedIn = false;
+          this.showCards = false;
       }
     });
 
@@ -97,6 +126,78 @@ var vue = new Vue({
         this.signupPassword = '';
       }
     },
+    addData: function() {
+      userData = {
+        firstName: this.firstNameAddModal,
+        lastName: this.lastNameAddModal,
+        profileImage: this.profileImageAddModal,
+        position: this.positionAddModal,
+        workedFor: this.workedForAddModal,
+        workLocation: this.workLocationAddModal,
+        aboutYou: this.aboutYouAddModal
+      }
+      
+      postData = {
+        method: 'POST',
+        body: JSON.stringify(userData),
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        cache: 'no-cache',
+        credentials: 'same-origin'
+      }
+      this.getUsers("https://us-central1-user-profile-4c1a4.cloudfunctions.net/userProfileApi/api/v1/users/", postData).then(res => {
+        console.log(res);
+
+        this.refetchUsers();
+
+        this.$refs['modal-add'].hide();
+      });
+      
+    },
+    deleteData: function(personId) {
+      const deleteData = {
+        method: 'DELETE'
+      }
+      console.log("delete user", personId);
+      this.getUsers(`https://us-central1-user-profile-4c1a4.cloudfunctions.net/userProfileApi/api/v1/users/${personId}`, deleteData).then(res => {
+        console.log(res);
+
+        this.refetchUsers();
+      });
+    },
+    editData: function(person) {
+      this.modalEditShow = true;
+      this.modalEditData = person;
+    },
+    editDataSubmit: function() {
+      putData = {
+        method: 'PUT',
+        body: JSON.stringify(this.modalEditData.data),
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        cache: 'no-cache',
+        credentials: 'same-origin'
+      };
+
+      this.getUsers(`https://us-central1-user-profile-4c1a4.cloudfunctions.net/userProfileApi/api/v1/users/${this.modalEditData.id}`, putData).then(res => {
+        console.log(res);
+
+        this.refetchUsers();
+
+        this.modalEditShow = false;
+      });
+
+    },
+    refetchUsers: function() {
+      this.getUsers("https://us-central1-user-profile-4c1a4.cloudfunctions.net/userProfileApi/api/v1/users/").then(res => {
+        console.log(res);
+        this.users = res;
+      });
+    }
   },
 })
 
