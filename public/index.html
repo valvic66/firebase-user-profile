@@ -141,7 +141,7 @@
       </div>
 
       <!-- edit data modal -->
-      <b-modal id="modal-edit" title="Edit data" ref="modal-edit" hide-footer v-model="modalEditShow">
+      <b-modal id="modal-edit" title="Edit data" hide-footer v-model="modalEditShow">
         <div id="form-edit">
           <div>
             <p>First name</p>
@@ -171,7 +171,7 @@
             <p>About you</p>
             <b-form-input type="text" v-model="modalEditData.data && modalEditData.data.aboutYou">
           </div>
-          <b-button class="button-edit" variant="outline-primary" v-on:click="editDataSubmit">Edit</b-button>
+          <b-button class="button-edit" variant="outline-primary" v-on:click="editDataSubmit">Save</b-button>
         </div>
       </b-modal>
 
