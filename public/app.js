@@ -2,21 +2,42 @@ Vue.component('person-item', {
   props: {
     person: String,
   },
+  mounted: function() {
+    console.log('person', this.person);
+  },
+  computed: {
+    fullName: function() {
+      return `${this.person.data.firstName} ${this.person.data.lastName}`;
+    }
+  },
   template: `
-    <div class="card col-sd-12 col-md-6 col-lg-3 col-xl-2">
-      <div class="card-body">
-        <h5 class="card-title">User card</h5>
-        <p class="card-text">{{ person.id }}</p>
-        <p class="card-text">{{ person.data.firstName }}</p>
-        <p class="card-text">{{ person.data.lastName }}</p>
-        <p class="card-text">{{ person.data.profileImage }}</p>
-        <p class="card-text">{{ person.data.position }}</p>
-        <p class="card-text">{{ person.data.workedFor }}</p>
-        <p class="card-text">{{ person.data.workLocation }}</p>
-        <p class="card-text">{{ person.data.aboutYou }}</p>
-      </div>
-      <b-button class="delete-button" variant="outline-primary" v-on:click="onClickDelete">Delete</b-button>
-      <b-button class="edit-button" variant="outline-primary" v-on:click="onClickEdit">Edit</b-button>
+    <div class="col-sd-12 col-md-6 col-lg-4 col-xl-3">
+      <b-card
+        v-bind:title="this.fullName"
+        v-bind:img-src="person.data.profileImage"
+        img-alt="User image"
+        img-top
+        tag="article"
+        style=""
+        class="mb-2"
+      >
+
+        <div class="section-title">Position</div>
+        <b-card-text>{{ person.data.position }}</b-card-text>
+        
+        <div class="section-title">Worked For</div>
+        <b-card-text>{{ person.data.workedFor }}</b-card-text>
+
+        <div class="section-title">Work Location</div>
+        <b-card-text>{{ person.data.workLocation }}</b-card-text>
+
+        <div class="section-title">About me</div>
+        <b-card-text>{{ person.data.aboutYou }}</b-card-text>
+
+        <b-button class="delete-button" variant="outline-primary" v-on:click="onClickDelete">Delete</b-button>
+        <b-button class="edit-button" variant="outline-primary" v-on:click="onClickEdit">Edit</b-button>
+      </b-card>
+      
     </div>
   `,
   methods: {
@@ -31,7 +52,7 @@ Vue.component('person-item', {
 
 Vue.component('users-number', {
   props: ['users'],
-  template: '<h3>Fetched {{ users }} users!</h3>'
+  template: '<p style="text-align: center; background-color: lightgray; padding: 1px">Fetched {{ users }} users</p>'
 })
 
 var vue = new Vue({
