@@ -173,6 +173,14 @@ var vue = new Vue({
 
         this.refetchUsers();
 
+        this.firstNameAddModal = '';
+        this.lastNameAddModal = '';
+        this.profileImageAddModal = '';
+        this.positionAddModal = '';
+        this.workedForAddModal = '';
+        this.workLocationAddModal = '';
+        this.aboutYouAddModal = '';
+
         this.$refs['modal-add'].hide();
       });
       
