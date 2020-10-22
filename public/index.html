@@ -49,7 +49,7 @@
               </template>
               <b-dropdown-item href="#" v-b-modal.modal-login>Login</b-dropdown-item>
               <b-dropdown-item href="#" v-b-modal.modal-signup>Sign Up</b-dropdown-item>
-              <b-dropdown-item href="#" v-on:click="logoutUser">Logout</b-dropdown-item>
+              <b-dropdown-item href="#" v-on:click="logoutUser" v-if="userLoggedIn">Logout</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
         </b-collapse>
