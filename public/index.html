@@ -39,7 +39,7 @@
               <template v-slot:button-content>
                 <em>Manage CMS data</em>
               </template>
-              <b-dropdown-item href="#" v-b-modal.modal-add>Add data</b-dropdown-item>
+              <b-dropdown-item href="#" v-b-modal.modal-add v-if="userLoggedIn">Add data</b-dropdown-item>
             </b-nav-item-dropdown>
 
             <b-nav-item-dropdown right>
